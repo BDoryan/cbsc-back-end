@@ -74,13 +74,13 @@ class UserController extends Controller
             if(!$path)
                 return response()->json(['error' => 'Erreur lors de l\'enregistrement de l\'image'], 500);
 
-            $user->picture = url('/storage/' . $path);
+            $user->picture = '/storage/' . $path;
         } else if ($user->picture == null) {
             $sex = $user->sex;
             if ($sex == User::SEX_MALE)
-                $user->picture = url('pictures/no-picture-male.jpg');
+                $user->picture = 'pictures/no-picture-male.jpg';
             else if ($sex == User::SEX_WOMEN)
-                $user->picture = url('pictures/no-picture-women.jpg');
+                $user->picture = 'pictures/no-picture-women.jpg';
         } else if ($request->file('profile_image') && $request->file('profile_image')->getError() != 0)
             return response()->json(['error' => 'Erreur lors de l\'envoi de l\'image'], 422);
 

@@ -10,10 +10,12 @@ use PHPUnit\Exception;
 class UserAuthController extends Controller
 {
 
-    /**
-     * l2hUYYkGpLO8Uwf
-     * 3|ZUysVUS0nYBxcx4YYmRROTbk8OeDvhWqupF5bYEh
-     */
+    public function createAuthenticationToken(Request $request, $id) {
+        $user = User::find($id);
+        $token = $user->createToken('CBSC')->plainTextToken;
+
+        return response()->json(['token' => $token]);
+    }
 
     // login to user
     public function login(Request $request)
@@ -32,7 +34,7 @@ class UserAuthController extends Controller
         if (!$user || !password_verify($all['password'], $user->password)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
-        $token = $user->createToken('token-name')->plainTextToken;
+        $token = $user->createToken('CBSC')->plainTextToken;
         $user->load('managing');
         $user->load('invitations');
         $user->load('licensed');
