@@ -36,9 +36,6 @@ class SubscriptionController extends Controller
         echo '<pre>';
         foreach ($users as $user) {
             if($user->email != 'contact@doryanbessiere.fr') continue;
-            // load subscription
-//            $user->load('pushSubscriptions');
-//            var_dump($user->pushSubscriptions());
             $user->notify(new ConvocationInvitationNotification($title, $message));
         }
     }
