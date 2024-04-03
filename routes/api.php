@@ -15,10 +15,7 @@ use App\Http\Controllers\SubscriptionController;
 |
 */
 
-/*
- * Peedge : TpkSTa3G8X9bPyh : 6|KmummZ6j7zoykrIAQmBpf35dlL9guUTb3jxsc6b6
- */
-
+Route::get('/notification/test', [SubscriptionController::class, 'sendNotification']);
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/user/me', 'App\Http\Controllers\UserController@me');

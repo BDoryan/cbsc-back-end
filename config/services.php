@@ -29,5 +29,14 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    'webpush' => [
+        'vapid' => [
+            'subject' => env('WEBPUSH_VAPID_SUBJECT'),
+            'public_key' => env('WEBPUSH_VAPID_PUBLIC_KEY'),
+            'private_key' => env('WEBPUSH_VAPID_PRIVATE_KEY'),
+            'pem_file' => null, // Path to your PEM file
+        ],
+    ],
+
 
 ];
