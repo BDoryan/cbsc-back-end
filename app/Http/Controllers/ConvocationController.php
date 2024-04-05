@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Convocation;
 use App\Models\ConvocationInvitation;
+use App\Models\User;
+use App\Notifications\ConvocationInvitationNotification;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -12,26 +14,64 @@ use Nette\Utils\Paginator;
 class ConvocationController extends Controller
 {
 
+    /**
+     * Get all convocations for the authenticated user
+     *
+     * @return LengthAwarePaginator
+     */
     public function index(): LengthAwarePaginator
     {
         // get authenticated user
         $user = auth()->user();
 
-        if($user->managing()->count() > 0) {
-            return Convocation::with('invitations')->with('invitations.user')->orderBy('created_at', 'desc')->paginate(5);
+        if ($user->managing()->count() > 0) {
+            return
+                Convocation::with('invitations')
+                    ->with('invitations.user')
+                    ->orderBy('datetime', 'desc')
+                    ->where('datetime', '>=', now())
+                    ->paginate(5);
         } else {
-            return $user->convocations()->with('invitations')->with('invitations.user')->orderBy('created_at', 'desc')->paginate(5);
+            return $user->convocations()->with('invitations')
+                ->with('invitations.user')
+                ->orderBy('datetime', 'desc')
+                ->where('datetime', '>=', now())->paginate(5);
         }
     }
 
-    public function myConvocations()
+    /**
+     * Search a convocation by title for the authenticated user
+     *
+     * @param Request $request
+     * @return Paginator
+     */
+    public function search(Request $request): Paginator
     {
-        // Get user authenticated
+        $search = $request->input('search');
         $user = auth()->user();
-        return $user->convocations()->paginate(25);
+
+        if ($user->managing()->count() > 0) {
+            return Convocation::where('title', 'like', '%' . $search . '%')
+                ->orderBy('created_at', 'desc')
+                ->where('datetime', '>=', now())->paginate(5)
+                ->paginate(5);
+        } else {
+            return $user->convocations()->where('title', 'like', '%' . $search . '%')
+                ->orderBy('created_at', 'desc')
+                ->where('datetime', '>=', now())->paginate(5)
+                ->paginate(5);
+        }
     }
 
-    public function accept(Request $request, $id) {
+    /**
+     * Accept a convocation invitation
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse|string[]
+     */
+    public function accept(Request $request, $id)
+    {
         try {
             /** @var ConvocationInvitation $invitation */
             $invitation = ConvocationInvitation::findOrFail($id);
@@ -48,7 +88,15 @@ class ConvocationController extends Controller
         }
     }
 
-    public function decline(Request $request, $id) {
+    /**
+     * Decline a convocation invitation
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse|string[]
+     */
+    public function decline(Request $request, $id)
+    {
         try {
             /** @var ConvocationInvitation $invitation */
             $invitation = ConvocationInvitation::findOrFail($id);
@@ -66,12 +114,12 @@ class ConvocationController extends Controller
         }
     }
 
-    public function search(Request $request): Paginator
-    {
-        $search = $request->input('search');
-        return Convocation::where('title', 'like', '%' . $search . '%')->paginator(25);
-    }
-
+    /**
+     * Get a convocation by id
+     *
+     * @param $id
+     * @return mixed
+     */
     public function show($id)
     {
         $convocation = Convocation::findOrFail($id);
@@ -82,20 +130,41 @@ class ConvocationController extends Controller
         return $convocation;
     }
 
+    /**
+     * Store a new convocation with invitations
+     *
+     * @return LengthAwarePaginator
+     */
     public function store(Request $request)
     {
         $convocation = Convocation::create($request->all());
 
         $invitations = $request->input('invitations');
         foreach ($invitations as $invitation) {
-            $convocation->invitations()->create([
-                'user_id' => intval($invitation)
-            ]);
+            try {
+                // fetch user by id
+                $user = User::find($invitation);
+
+                $convocation->invitations()->create([
+                    'user_id' => intval($invitation)
+                ]);
+
+                $user->notify(new ConvocationInvitationNotification($convocation->title, $convocation->content));
+            } catch (ModelNotFoundException $e) {
+                // do nothing
+            }
         }
 
         return $convocation;
     }
 
+    /**
+     * Update a convocation with invitations
+     *
+     * @param Request $request
+     * @param $id
+     * @return Convocation
+     */
     public function update(Request $request, $id)
     {
         /** @var Convocation $convocation */
@@ -115,9 +184,18 @@ class ConvocationController extends Controller
         // Compare the invitations to add
         foreach ($invitations as $invitation) {
             if (!$convocation_invitations->contains('user_id', $invitation)) {
-                $convocation->invitations()->create([
-                    'user_id' => intval($invitation)
-                ]);
+                try {
+                    // fetch user by id
+                    $user = User::find($invitation);
+
+                    $convocation->invitations()->create([
+                        'user_id' => intval($invitation)
+                    ]);
+
+                    $user->notify(new ConvocationInvitationNotification($convocation->title, $convocation->content));
+                } catch (ModelNotFoundException $e) {
+                    // do nothing
+                }
             }
         }
 
@@ -126,6 +204,13 @@ class ConvocationController extends Controller
         return $convocation;
     }
 
+    /**
+     * Delete a convocation by id
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function delete(Request $request, $id)
     {
         try {
