@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\LicensedUser;
 use App\Models\ManagingUser;
 use App\Models\User;
+use App\Notifications\MyAccountLoginNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use PHPUnit\Exception;
@@ -148,7 +149,9 @@ class UserController extends Controller
         $all['updated_at'] = date('Y-m-d H:i:s');
 
         $password_generated = substr(str_shuffle(str_repeat('abcdefghijklmnopqrstuvwxyz' . strtoupper('abcdefghijklmnopqrstuvwxyz') . '123456789', 5)), 0, 15);
-        $all['password'] = bcrypt($password_generated);
+
+
+        $all['password'] = bcrypt($password_generated); // password hashed
 
         if ($validator->fails())
             return response()->json($validator->errors(), 422);
@@ -177,6 +180,7 @@ class UserController extends Controller
             $user->password_generated = $password_generated;
 
             // Send email here
+             $user->notify(new MyAccountLoginNotification($user->email, $password_generated));
 
             return $user;
         } catch (Exception $e) {
