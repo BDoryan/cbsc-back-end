@@ -12,6 +12,8 @@ class ConvocationInvitation extends Model
     protected $fillable = [
         'user_id',
         'convocation_id',
+        'accepted',
+        'responded_at'
     ];
 
     /**
@@ -20,11 +22,9 @@ class ConvocationInvitation extends Model
      * @return void
      */
     public function accept() {
-        if($this->accepted()->exists())
-            return;
-
-        $this->declined()->delete();
-        $this->accepted()->create();
+        $this->accepted = true;
+        $this->responded_at = now();
+        $this->save();
     }
 
     /**
@@ -33,38 +33,10 @@ class ConvocationInvitation extends Model
      * @return void
      */
     public function decline() {
-        if($this->declined()->exists())
-            return;
-
-        $this->accepted()->delete();
-        $this->declined()->create();
+        $this->accepted = false;
+        $this->responded_at = now();
+        $this->save();
     }
-
-    /**
-     * Return a relation if the invitation has been accepted
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function accepted(): \Illuminate\Database\Eloquent\Relations\HasOne {
-        return $this->hasOne(ConvocationInvitationAccepted::class, 'convocation_invitation_id');
-    }
-
-    /**
-     * Return a relation if the invitation has been declined
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function declined(): \Illuminate\Database\Eloquent\Relations\HasOne {
-        return $this->hasOne(ConvocationInvitationDeclined::class, 'convocation_invitation_id');
-    }
-
-//    public function status(): string {
-//        if($this->accepted()->exists())
-//            return 'accepted';
-//        if($this->declined()->exists())
-//            return 'declined';
-//        return 'pending';
-//    }
 
     // Relier à la convocation
     public function convocation() {
@@ -74,15 +46,6 @@ class ConvocationInvitation extends Model
     // Relier à l'utilisateur
     public function user() {
         return $this->belongsTo(User::class);
-    }
-
-    protected static function boot() {
-        parent::boot();
-
-        static::deleting(function ($invitation) {
-            $invitation->accepted()->delete();
-            $invitation->declined()->delete();
-        });
     }
 }
 

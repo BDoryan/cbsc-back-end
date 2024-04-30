@@ -66,7 +66,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Return all convocations for the user
+     * Return all convocations for the user accepted and not outdated
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
@@ -80,14 +80,9 @@ class User extends Authenticatable
                 'id',
                 'id',
                 'convocation_id'
-            )
-            ->leftJoin(
-                'convocation_invitations_accepted',
-                'convocation_invitations.id',
-                '=',
-                'convocation_invitations_accepted.convocation_invitation_id'
-            )
-            ->whereNotNull('convocation_invitations_accepted.convocation_invitation_id');
+            )->whereHas('invitations', function ($query) {
+                $query->where('accepted', true);
+            })->where('datetime', '>=', now());
     }
 
     /**
@@ -98,12 +93,12 @@ class User extends Authenticatable
     public function invitations(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(ConvocationInvitation::class)
-            ->whereDoesntHave('accepted')
-            ->whereDoesntHave('declined')
+            ->where('accepted', null)
             ->with('convocation')
-            ->with('convocation.invitations')
-            ->with('convocation.invitations.accepted')
-            ->with('convocation.invitations.declined');
+            ->whereHas('convocation', function ($query) {
+                $query->where('datetime', '>=', now());
+            })
+            ->with('convocation.invitations');
     }
 
     public function licensed(): \Illuminate\Database\Eloquent\Relations\HasOne

@@ -20,7 +20,7 @@ class Convocation extends Model
 
     public function invitations(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(ConvocationInvitation::class)->with('accepted')->with('declined');
+        return $this->hasMany(ConvocationInvitation::class);
     }
 
     protected static function boot()
