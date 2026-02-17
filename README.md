@@ -421,29 +421,6 @@ SANCTUM_STATEFUL_DOMAINS=votre-domaine.com
 CORS_ALLOWED_ORIGINS=https://votre-domaine.com
 ```
 
-## 📝 Notes de version
-
-### Statut du projet
-Ce projet est en développement. Voir todo.md pour la liste des tâches en cours.
-
-### Fonctionnalités planifiées
-- [ ] Interfaces personnalisées pour les utilisateurs
-- [ ] Recherche avancée de convocations et utilisateurs
-- [ ] Notifications push complètes
-- [ ] Sélection de la caméra (avant/arrière)
-- [ ] Déploiement en production sous HTTPS
-
-## 🤝 Contribution
-
-Les contributions sont bienvenues ! Pour contribuer :
-
-1. Fork le repository
-2. Créer une branche (`git checkout -b feature/amazingfeature`)
-3. Commit les modifications (`git commit -m 'Add amazingfeature'`)
-4. Push vers la branche (`git push origin feature/amazingfeature`)
-5. Ouvrir une Pull Request
-
-
 ## 📧 Contact
 
 Pour toute question ou suggestion, veuillez contacter les responsables du projet.
