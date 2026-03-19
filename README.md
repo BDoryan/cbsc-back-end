@@ -1,144 +1,154 @@
 # CBSC Application - Backend
 
-> **Gestion de Club de Pétanque** - Une application web progressive (PWA) facilitant la gestion administrative et les communications au sein d'un club de pétanque.
+> **CBSC Application** - A Progressive Web Application (PWA) designed to simplify administrative management and communication within a petanque club.
 
-## 📋 Table des matières
+## Table of Contents
 
-- [À propos](#-à-propos)
-- [Fonctionnalités](#-fonctionnalités)
-- [Structure du projet](#-structure-du-projet)
-- [Prérequis](#-prérequis)
-- [Installation](#-installation)
-- [Configuration](#-configuration)
-- [Démarrage](#-démarrage)
-- [API Documentation](#-api-documentation)
-- [Architecture](#-architecture)
-- [Base de données](#-base-de-données)
-- [Authentification](#-authentification)
-- [Notifications](#-notifications)
-- [Tests](#-tests)
-- [Déploiement](#-déploiement)
+* [About](#about)
+* [Features](#features)
+* [Project Structure](#project-structure)
+* [Prerequisites](#prerequisites)
+* [Installation](#installation)
+* [Configuration](#configuration)
+* [Getting Started](#getting-started)
+* [API Documentation](#api-documentation)
+* [Architecture](#architecture)
+* [Database](#database)
+* [Authentication](#authentication)
+* [Notifications](#notifications)
+* [Tests](#tests)
+* [Deployment](#deployment)
 
-## 🎯 À propos
+## About
 
-CBSC (Club Bouliste Saint Couatais) est une application web progressive conçue pour simplifier la gestion administrative d'un club de pétanque. Elle permet aux responsables de gérer les utilisateurs, d'organiser des convocations et d'envoyer des notifications en temps réel aux membres.
+CBSC (Club Bouliste Saint Couatais) is a Progressive Web Application designed to simplify the administrative management of a petanque club. It allows managers to handle users, organize convocations (events/invitations), and send real-time notifications to members.
 
-L'application est construite avec **Laravel 8** comme backend API RESTful et utilise des technologies modernes comme **Sanctum** pour l'authentification et les **Web Push Notifications** pour les communications.
+The application is built with **Laravel 8** as a RESTful backend API and uses modern technologies such as **Sanctum** for authentication and **Web Push Notifications** for communication.
 
-## ✨ Fonctionnalités
+## Features
 
-### Gestion des utilisateurs
-- ✅ Authentification sécurisée avec tokens
-- ✅ Différents rôles : Membres licenciés et Responsables
-- ✅ Gestion complète des profils utilisateurs
-- ✅ Recherche et filtrage des utilisateurs
+### User Management
 
-### Gestion des convocations
-- ✅ Création et gestion des convocations
-- ✅ Envoi d'invitations aux membres
-- ✅ Réponse aux invitations (accepter/refuser)
-- ✅ Filtrage et recherche des convocations
-- ✅ Affichage des convocations personnelles
+* Secure authentication with tokens
+* Multiple roles: Licensed Members and Managers
+* Full user profile management
+* User search and filtering
+
+### Convocation Management
+
+* Creation and management of convocations
+* Sending invitations to members
+* Responding to invitations (accept/decline)
+* Filtering and searching convocations
+* Viewing personal convocations
 
 ### Notifications
-- ✅ Notifications Web Push en temps réel
-- ✅ Souscription/désinscription aux notifications
-- ✅ Notifications d'invitations de convocation
 
-### Authentification et sécurité
-- ✅ Authentification par email/mot de passe
-- ✅ Tokens Sanctum personnels pour l'API
-- ✅ Protection CORS intégrée
-- ✅ Middlewares de gestion des rôles
+* Real-time Web Push notifications
+* Subscribe/unsubscribe to notifications
+* Convocation invitation notifications
 
-## 📁 Structure du projet
+### Authentication and Security
+
+* Email/password authentication
+* Sanctum personal tokens for API
+* Built-in CORS protection
+* Role-based middleware
+
+## Project Structure
 
 ```
 cbsc-back-end/
 ├── app/
-│   ├── Console/              # Commandes Artisan personnalisées
-│   ├── Exceptions/           # Gestion des exceptions
+│   ├── Console/
+│   ├── Exceptions/
 │   ├── Http/
-│   │   ├── Controllers/      # Contrôleurs API
-│   │   ├── Kernel.php        # Middlewares HTTP
-│   │   └── Middleware/       # Middlewares personnalisés
-│   ├── Models/               # Modèles Eloquent
-│   ├── Notifications/        # Classes de notifications
-│   └── Providers/            # Fournisseurs de services
-├── bootstrap/                # Fichiers d'amorçage
-├── config/                   # Fichiers de configuration
+│   │   ├── Controllers/
+│   │   ├── Kernel.php
+│   │   └── Middleware/
+│   ├── Models/
+│   ├── Notifications/
+│   └── Providers/
+├── bootstrap/
+├── config/
 ├── database/
-│   └── migrations/           # Migrations de base de données
-├── public/                   # Fichiers publics (index.php, assets)
-├── resources/                # Vues et langues
+│   └── migrations/
+├── public/
+├── resources/
 ├── routes/
-│   ├── api.php              # Routes API
-│   ├── web.php              # Routes web
-│   └── channels.php         # Canaux Websocket
-├── storage/                  # Fichiers générés (logs, cache, uploads)
-├── tests/                    # Tests unitaires et d'intégration
-├── composer.json             # Dépendances PHP
-├── package.json              # Dépendances Node.js
-├── webpack.mix.js            # Configuration Webpack/Mix
-└── .env.example              # Exemple de configuration
+│   ├── api.php
+│   ├── web.php
+│   └── channels.php
+├── storage/
+├── tests/
+├── composer.json
+├── package.json
+├── webpack.mix.js
+└── .env.example
 ```
 
-## 🔧 Prérequis
+## Prerequisites
 
-- **PHP** 7.3+ ou 8.0+
-- **Composer** 2.0+
-- **Node.js** 12+
-- **npm** ou **yarn**
-- **MySQL** 5.7+ ou **MariaDB**
-- **Git**
+* **PHP** 7.3+ or 8.0+
+* **Composer** 2.0+
+* **Node.js** 12+
+* **npm** or **yarn**
+* **MySQL** 5.7+ or **MariaDB**
+* **Git**
 
-## ⚙️ Installation
+## Installation
 
-### 1. Cloner le repository
+### 1. Clone the repository
+
 ```bash
 git clone https://github.com/BDoryan/cbsc-back-end.git
 cd cbsc-back-end
 ```
 
-### 2. Installer les dépendances PHP
+### 2. Install PHP dependencies
+
 ```bash
 composer install
 ```
 
-### 3. Installer les dépendances Node.js
+### 3. Install Node.js dependencies
+
 ```bash
 npm install
 ```
 
-### 4. Copier le fichier d'environnement
+### 4. Copy environment file
+
 ```bash
 cp .env.example .env
 ```
 
-### 5. Générer la clé d'application
+### 5. Generate application key
+
 ```bash
 php artisan key:generate
 ```
 
-### 6. Configurer la base de données (voir section Configuration)
+### 6. Configure the database (see Configuration section)
 
-### 7. Exécuter les migrations
+### 7. Run migrations
+
 ```bash
 php artisan migrate
 ```
 
-## 🔐 Configuration
+## Configuration
 
-### Variables d'environnement (`.env`)
+### Environment variables (`.env`)
 
 ```bash
 APP_NAME=CBSC
 APP_ENV=local
-APP_KEY=                           # Générée automatiquement
+APP_KEY=
 APP_DEBUG=true
 APP_URL=http://localhost:8000
 
-# Base de données
+# Database
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
@@ -146,7 +156,7 @@ DB_DATABASE=cbsc
 DB_USERNAME=root
 DB_PASSWORD=
 
-# Mail (pour les notifications)
+# Mail
 MAIL_MAILER=smtp
 MAIL_HOST=smtp.mailtrap.io
 MAIL_PORT=2525
@@ -154,275 +164,209 @@ MAIL_USERNAME=
 MAIL_PASSWORD=
 MAIL_FROM_NAME="${APP_NAME}"
 
-# Web Push Notifications
+# Web Push
 WEBPUSH_PUBLIC_KEY=
 WEBPUSH_PRIVATE_KEY=
 
-# Autres services
+# Other
 CORS_ALLOWED_ORIGINS=*
 SANCTUM_STATEFUL_DOMAINS=localhost:3000,127.0.0.1:3000
 ```
 
-### Configuration CORS
-Modifier config/cors.php pour autoriser les origines de votre frontend.
+### CORS Configuration
 
-## 🚀 Démarrage
+Edit `config/cors.php` to allow your frontend origins.
 
-### Mode développement
+## Getting Started
+
+### Development mode
+
 ```bash
-# Serveur Laravel
 php artisan serve
-
-# Compilation des assets (dans une autre terminale)
 npm run dev
 ```
 
-### Mode production
-```bash
-# Compilation optimisée
-npm run production
+### Production mode
 
-# Cache de configuration
+```bash
+npm run production
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 ```
 
-## 📡 API Documentation
+## API Documentation
 
 ### Base URL
+
 ```
 http://localhost:8000/api
 ```
 
-### Authentification
-Tous les endpoints (sauf `/users/login`) requièrent un token Sanctum dans l'en-tête:
+### Authentication
+
+All endpoints (except `/users/login`) require a Sanctum token:
+
 ```
 Authorization: Bearer {token}
 ```
 
-### Endpoints principaux
+### Main Endpoints
 
-#### 👤 Utilisateurs
+#### Users
 
-| Méthode | Endpoint | Description | Rôle |
-|---------|----------|-------------|------|
-| POST | `/user/login` | Connexion utilisateur | Public |
-| GET | `/user/me` | Récupère l'utilisateur courant | Authentifié |
-| POST | `/user/logout` | Déconnexion | Authentifié |
-| GET | `/users` | Liste les utilisateurs paginée | Authentifié |
-| GET | `/users/all` | Liste tous les utilisateurs | Authentifié |
-| GET | `/users/licensed` | Liste les membres licenciés | Authentifié |
-| GET | `/users/managing` | Liste les responsables | Authentifié |
-| GET | `/users/search` | Recherche d'utilisateurs | Authentifié |
-| GET | `/users/{id}` | Détails d'un utilisateur | Authentifié |
-| POST | `/users` | Créer un utilisateur | Responsable |
-| PUT | `/users/{id}` | Modifier un utilisateur | Responsable |
-| DELETE | `/users/{id}` | Supprimer un utilisateur | Responsable |
-| GET | `/users/{id}/generate/token` | Générer un token d'auth | Responsable |
+| Method | Endpoint                     | Description      | Role          |
+| ------ | ---------------------------- | ---------------- | ------------- |
+| POST   | `/user/login`                | Login            | Public        |
+| GET    | `/user/me`                   | Get current user | Authenticated |
+| POST   | `/user/logout`               | Logout           | Authenticated |
+| GET    | `/users`                     | Paginated users  | Authenticated |
+| GET    | `/users/all`                 | All users        | Authenticated |
+| GET    | `/users/licensed`            | Licensed members | Authenticated |
+| GET    | `/users/managing`            | Managers         | Authenticated |
+| GET    | `/users/search`              | Search users     | Authenticated |
+| GET    | `/users/{id}`                | User details     | Authenticated |
+| POST   | `/users`                     | Create user      | Manager       |
+| PUT    | `/users/{id}`                | Update user      | Manager       |
+| DELETE | `/users/{id}`                | Delete user      | Manager       |
+| GET    | `/users/{id}/generate/token` | Generate token   | Manager       |
 
-#### 📢 Convocations
+#### Convocations
 
-| Méthode | Endpoint | Description | Rôle |
-|---------|----------|-------------|------|
-| GET | `/convocations` | Liste toutes les convocations | Authentifié |
-| GET | `/me/convocations` | Mes convocations | Authentifié |
-| GET | `/convocations/{id}` | Détails d'une convocation | Authentifié |
-| GET | `/convocations/search` | Recherche de convocations | Authentifié |
-| POST | `/convocations` | Créer une convocation | Responsable |
-| PUT | `/convocations/{id}` | Modifier une convocation | Responsable |
-| DELETE | `/convocations/{id}` | Supprimer une convocation | Responsable |
-| POST | `/convocations/{id}/accept` | Accepter une invitation | Authentifié |
-| POST | `/convocations/{id}/decline` | Refuser une invitation | Authentifié |
+| Method | Endpoint                     | Description       | Role          |
+| ------ | ---------------------------- | ----------------- | ------------- |
+| GET    | `/convocations`              | List convocations | Authenticated |
+| GET    | `/me/convocations`           | My convocations   | Authenticated |
+| GET    | `/convocations/{id}`         | Details           | Authenticated |
+| GET    | `/convocations/search`       | Search            | Authenticated |
+| POST   | `/convocations`              | Create            | Manager       |
+| PUT    | `/convocations/{id}`         | Update            | Manager       |
+| DELETE | `/convocations/{id}`         | Delete            | Manager       |
+| POST   | `/convocations/{id}/accept`  | Accept            | Authenticated |
+| POST   | `/convocations/{id}/decline` | Decline           | Authenticated |
 
-#### 🔔 Notifications
+#### Notifications
 
-| Méthode | Endpoint | Description |
-|---------|----------|-------------|
-| POST | `/subscribe` | S'abonner aux notifications Web Push |
-| POST | `/unsubscribe` | Se désabonner des notifications |
-| GET | `/notification/test` | Envoyer une notification de test |
+| Method | Endpoint             | Description       |
+| ------ | -------------------- | ----------------- |
+| POST   | `/subscribe`         | Subscribe to push |
+| POST   | `/unsubscribe`       | Unsubscribe       |
+| GET    | `/notification/test` | Test notification |
 
-### Exemple de requête
-```bash
-# Connexion
-curl -X POST http://localhost:8000/api/user/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"user@example.com","password":"password"}'
+## Architecture
 
-# Récupérer mes convocations
-curl -X GET http://localhost:8000/api/me/convocations \
-  -H "Authorization: Bearer YOUR_TOKEN"
-```
+### Data Models
 
-## 🏗️ Architecture
+* **User**: authentication and profile
+* **Convocation**: event with title, content, date
+* **ConvocationInvitation**: invitation with status (pending, accepted, declined)
+* **LicensedUser / ManagingUser**: role distinction
 
-### Modèles de données
+### Controllers
 
-#### User
-- Authentification et profil utilisateur
-- Relations avec LicensedUser et ManagingUser
-
-#### Convocation
-- Représente une convocation (réunion/événement)
-- Contient titre, contenu et date/heure
-- Relations : hasMany invitations
-
-#### ConvocationInvitation
-- Représente une invitation d'une convocation à un utilisateur
-- Statuts : pending, accepted, declined
-
-#### LicensedUser & ManagingUser
-- Relations polymorphes pour distinguer les rôles
-- LicensedUser : membre licencié
-- ManagingUser : responsable/administrateur
-
-### Contrôleurs
-- `UserController` : Gestion des utilisateurs
-- `UserAuthController` : Authentification et tokens
-- `ConvocationController` : Gestion des convocations
-- `SubscriptionController` : Gestion des notifications Web Push
+* `UserController`
+* `UserAuthController`
+* `ConvocationController`
+* `SubscriptionController`
 
 ### Middlewares
-- `auth:sanctum` : Authentification par token
-- `managing` : Vérification du rôle de responsable
-- CORS : Gestion des origines autorisées
 
-## 🗄️ Base de données
+* `auth:sanctum`
+* `managing`
+* CORS
 
-### Tables principales
-- `users` : Utilisateurs
-- `convocations` : Convocations
-- `convocation_invitations` : Invitations de convocations
-- `licensed_users` : Relation polymorphe pour membres
-- `managing_users` : Relation polymorphe pour responsables
-- `personal_access_tokens` : Tokens Sanctum
+## Database
+
+### Main Tables
+
+* `users`
+* `convocations`
+* `convocation_invitations`
+* `licensed_users`
+* `managing_users`
+* `personal_access_tokens`
 
 ### Migrations
-Les migrations sont situées dans database/migrations/. Pour les exécuter :
 
 ```bash
-# Exécuter les migrations
 php artisan migrate
-
-# Revenir en arrière
 php artisan migrate:rollback
-
-# Recréer la base de données
 php artisan migrate:refresh
-
-# Ajouter des données de test
 php artisan db:seed
 ```
 
-## 🔑 Authentification
+## Authentication
 
-### Stratégies implémentées
+### Sanctum Token
 
-#### 1. Token Sanctum (API)
-Authentification sans état avec tokens personnels
 ```php
 Route::middleware('auth:sanctum')->group(function () {
-    // Routes protégées
+    // Protected routes
 });
 ```
 
-#### 2. Vérification des rôles
+### Role Middleware
+
 ```php
 Route::middleware('managing')->group(function () {
-    // Uniquement accessibles aux responsables
+    // Manager-only routes
 });
 ```
 
-### Génération de tokens
+### Token generation
+
 ```bash
 php artisan tinker
->>> $user = App\Models\User::first();
->>> $token = $user->createToken('app-token');
->>> $token->plainTextToken;
 ```
 
-## 🔔 Notifications
+## Notifications
 
-### Web Push Notifications
+### Web Push
 
-Configuration dans config/webpush.php.
+Generate keys:
 
-#### Générer les clés
 ```bash
 php artisan webpush:vapid
 ```
 
-#### Envoyer une notification
+Send notification:
+
 ```php
 $user->notify(new ConvocationInvitationNotification($convocation));
 ```
 
-#### Classes de notifications
-- `ConvocationInvitationNotification` : Notification d'invitation de convocation
-- `MyAccountLoginNotification` : Notification de connexion
+## Tests
 
-## ✅ Tests
-
-### Exécuter les tests
 ```bash
-# Tous les tests
 php artisan test
-
-# Seulement les tests unitaires
 php artisan test --type=unit
-
-# Avec rapport de couverture
 php artisan test --coverage
 ```
 
-Les tests sont situés dans le dossier tests/. Tests disponibles dans tests/Unit/.
+## Deployment
 
-## 🚀 Déploiement
-
-### Préparation pour la production
-
-1. **Vérifier les exigences**
-   ```bash
-   php artisan check
-   ```
-
-2. **Optimiser l'application**
-   ```bash
-   php artisan optimize
-   php artisan config:cache
-   php artisan route:cache
-   php artisan view:cache
-   ```
-
-3. **Assets Front-end**
-   ```bash
-   npm run production
-   ```
-
-4. **Migrer la base de données**
-   ```bash
-   php artisan migrate --force
-   ```
-
-### Configuration du serveur HTTPS
-Pour utiliser toutes les fonctionnalités (Web Push, caméra), un certificat SSL/HTTPS est obligatoire.
+### Production setup
 
 ```bash
-# Avec Let's Encrypt
-certbot certonly --standalone -d votre-domaine.com
+php artisan optimize
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+npm run production
+php artisan migrate --force
 ```
 
-### Variables d'environnement production
+### HTTPS requirement
+
+```bash
+certbot certonly --standalone -d your-domain.com
+```
+
+### Production environment
+
 ```bash
 APP_DEBUG=false
 APP_ENV=production
-SANCTUM_STATEFUL_DOMAINS=votre-domaine.com
-CORS_ALLOWED_ORIGINS=https://votre-domaine.com
+SANCTUM_STATEFUL_DOMAINS=your-domain.com
+CORS_ALLOWED_ORIGINS=https://your-domain.com
 ```
-
-## 📧 Contact
-
-Pour toute question ou suggestion, veuillez contacter les responsables du projet.
-
----
